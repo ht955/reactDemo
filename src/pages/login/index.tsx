@@ -1,40 +1,40 @@
-import React, {  useEffect ,useState  } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
  import { useAppDispatch } from '@/hooks/redux'
 import { setUserInfo, setToken } from '@/store/slices/user'
 import type { FormProps } from 'antd';
 import { Skeleton,Card,Button, Checkbox, Form, Input} from 'antd'
-import { DotChartOutlined } from '@ant-design/icons';
 import './index.css';
 type FieldType = {
-  username?:string,
-  password?:string,
+  username:string,
+  password:string,
   remember?:string,
 }
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log(values,'valuesvaluesvaluesvaluesvaluesvaluesvaluesvalues');
+
+const Login: React.FC = () => {
+  let [loading,setLoading] = useState(true);
+  const dispatch = useAppDispatch()
+    const navigate = useNavigate();
+  const setInfo = ({ username}:{username:string}) => {
+    dispatch(setUserInfo({name:username,role:'超级管理员'}))
+    dispatch(setToken('######'))
+  }
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    setInfo(values)
+      navigate('/layout/home'); // 跳转到首页
 }
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-const Login: React.FC = () => {
-  let [loading,setLoading] = useState(true);
-  const dispatch = useAppDispatch()
-  const setInfo = () => {
-    dispatch(setUserInfo({name:'ht',role:'超级管理员'}))
-    dispatch(setToken('######'))
-  }
   useEffect(() => {
-    setTimeout(() => {
       setLoading(false)
-  },3000)
-  
 })
   
   return (
     <main className='main_box'>
      <Card
-    hoverable
-        style={{ width: 540}}
+      hoverable
+    style={{ width: 540}}
   >
       <Skeleton loading={loading} active>
         <Form
